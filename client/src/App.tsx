@@ -46,7 +46,7 @@ export default function App() {
       })
       console.log(response.data.docId)
       setDocId(response.data.docId)
-      setUploadSuccess(true)
+      // setUploadSuccess(true)
       // alert('PDF uploaded successfully!')
     } catch (error) {
       console.error('Error uploading PDF:', error)
