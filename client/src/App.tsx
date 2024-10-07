@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Button } from "./components/ui/button"
 import { Input } from "./components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card"
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3001/'
 // import { Alert, AlertDescription } from "./components/ui/alert"
 // import { CheckCircle2 } from "lucide-react"
 
@@ -41,7 +42,7 @@ export default function App() {
 
     setLoading(true)
     try {
-      const response = await axios.post('http://localhost:3001/upload', formData, {
+      const response = await axios.post(`${BASE_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       console.log(response.data.docId)
@@ -60,7 +61,7 @@ export default function App() {
 
     setLoading(true)
     try {
-      const response = await axios.post<{ answer: string }>('http://localhost:3001/ask', { docId, question })
+      const response = await axios.post<{ answer: string }>(`${BASE_URL}/ask`, { docId, question })
       setAnswer(response.data.answer)
     } catch (error) {
       console.error('Error asking question:', error)

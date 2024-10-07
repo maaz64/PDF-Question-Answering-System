@@ -8,7 +8,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'success' });
+});
 
+app.use('/api', require('./routes'));
 
 const PORT = process.env.PORT || 3001;
 connectDB().then(() => {
