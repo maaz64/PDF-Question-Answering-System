@@ -3,11 +3,11 @@ import axios from 'axios'
 import { Button } from "./components/ui/button"
 import { Input } from "./components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card"
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3001/'
+const BASE_URL = 'https://pdf-question-answering-system.onrender.com/api'
 // import { Alert, AlertDescription } from "./components/ui/alert"
 // import { CheckCircle2 } from "lucide-react"
 
-export default function App() {
+export default function App() { 
   const [file, setFile] = useState<File | null>(null)
   const [docId, setDocId] = useState<string>('')
   const [question, setQuestion] = useState<string>('')
