@@ -7,7 +7,6 @@ const fs = require('fs');
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY);
 
 // PDF upload endpoint
-// app.post('/upload', upload.single('pdf'), async (req, res) => {
 const uploadDocument = async (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.');

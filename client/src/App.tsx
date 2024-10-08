@@ -3,28 +3,14 @@ import axios from 'axios'
 import { Button } from "./components/ui/button"
 import { Input } from "./components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card"
-const BASE_URL = 'https://pdf-question-answering-system.onrender.com/api'
-// import { Alert, AlertDescription } from "./components/ui/alert"
-// import { CheckCircle2 } from "lucide-react"
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://pdf-question-answering-system.onrender.com/api'
 
 export default function App() { 
   const [file, setFile] = useState<File | null>(null)
-  const [docId, setDocId] = useState<string>('')
+  const [docId, setDocId] = useState<string>('') 
   const [question, setQuestion] = useState<string>('')
   const [answer, setAnswer] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
-  // const [uploadSuccess, setUploadSuccess] = useState<boolean>(false)
-
-
-  // useEffect(() => {
-  //   let timer: NodeJS.Timeout
-  //   if (uploadSuccess) {
-  //     timer = setTimeout(() => {
-  //       setUploadSuccess(false)
-  //     }, 1000) // Hide the notification after 3 seconds
-  //   }
-  //   return () => clearTimeout(timer)
-  // }, [uploadSuccess])
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -45,13 +31,9 @@ export default function App() {
       const response = await axios.post(`${BASE_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      console.log(response.data.docId)
       setDocId(response.data.docId)
-      // setUploadSuccess(true)
-      // alert('PDF uploaded successfully!')
     } catch (error) {
       console.error('Error uploading PDF:', error)
-      // alert('Error uploading PDF')
     }
     setLoading(false)
   }
@@ -94,12 +76,6 @@ export default function App() {
               Upload
             </Button>
           </div>
-          {/* {uploadSuccess && (
-            <Alert className="mt-4">
-              <CheckCircle2 className="h-4 w-4" />
-              <AlertDescription>PDF uploaded successfully!</AlertDescription>
-            </Alert>
-          )} */}
         </CardContent>
       </Card>
 

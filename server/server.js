@@ -4,7 +4,9 @@ const connectDB = require('./config/db');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.ORIGIN,
+}))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,3 +22,5 @@ connectDB().then(() => {
     console.log(`Server running on port ${PORT}`);
   });
 });
+
+module.exports = app;
