@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-  origin: process.env.ORIGIN,
+  origin: [process.env.ORIGIN, process.env.ORIGIN_LOCAL, process.envORIGIN_LOCAL_2],
 }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

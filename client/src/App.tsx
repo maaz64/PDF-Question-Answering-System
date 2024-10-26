@@ -5,7 +5,7 @@ import { Input } from "./components/ui/input"
 import { Textarea } from "./components/ui/textarea"
 import { ScrollArea } from "./components/ui/scroll-area"
 import { Upload, Send, Bot, User, Sun, Moon } from "lucide-react"
-const BASE_URL = 'https://pdf-question-answering-system.onrender.com/api'
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3001/api';
 
 export default function App() {
   const [file, setFile] = useState<File | null>(null)
@@ -29,6 +29,10 @@ export default function App() {
     }
   }
 
+  useEffect(()=>{
+    console.log('file', file);
+  },[file])
+
   const handleUpload = async () => {
     if (!file) return
 
@@ -41,7 +45,8 @@ export default function App() {
       const response = await axios.post<{ message: string; docId: string }>(`${BASE_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      setDocId(response.data.docId)
+      console.log("doc id", response?.data?.docId)
+      setDocId(response?.data?.docId)
       setMessages(prev => [...prev, { role: 'assistant', content: `PDF "${file.name}" uploaded successfully. You can now ask questions about it.` }])
     } catch (error) {
       console.error('Error uploading PDF:', error)
@@ -140,14 +145,22 @@ export default function App() {
                     </div>
                   )}
                   {message.role === 'user' && (
-                    <div className="flex items-start">
-                      <div className="bg-blue-500 text-white rounded-lg p-2 max-w-[75%]">
-                        {message.content}
+                    // <div className="flex items-start">
+                    //   <div className="bg-blue-500 text-white rounded-lg p-2 max-w-[75%]">
+                    //     {message.content}
+                    //   </div>
+                    //   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-300 flex items-center justify-center ml-2">
+                    //     <User className="h-5 w-5 text-blue-600" />
+                    //   </div>
+                    // </div>
+                      <div className="flex items-start">
+                        <div className="bg-blue-500 text-white rounded-lg p-2 max-w-full"> {/* Changed max-w-[75%] to max-w-full */}
+                          {message.content}
+                        </div>
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-300 flex items-center justify-center ml-2">
+                          <User className="h-5 w-5 text-blue-600" />
+                        </div>
                       </div>
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-300 flex items-center justify-center ml-2">
-                        <User className="h-5 w-5 text-blue-600" />
-                      </div>
-                    </div>
                   )}
                 </div>
               ))}
