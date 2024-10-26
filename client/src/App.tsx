@@ -5,7 +5,7 @@ import { Input } from "./components/ui/input"
 import { Textarea } from "./components/ui/textarea"
 import { ScrollArea } from "./components/ui/scroll-area"
 import { Upload, Send, Bot, User, Sun, Moon } from "lucide-react"
-const REACT_APP_BASE_URL = process.env.BASE_URL || 'http://localhost:3001/api';
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001/api';
 
 export default function App() {
   const [file, setFile] = useState<File | null>(null)
@@ -42,7 +42,7 @@ export default function App() {
     setLoading(true)
     setError(null)
     try {
-      const response = await axios.post<{ message: string; docId: string }>(`${REACT_APP_BASE_URL }/upload`, formData, {
+      const response = await axios.post<{ message: string; docId: string }>(`${BASE_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       console.log("doc id", response?.data?.docId)
@@ -63,7 +63,7 @@ export default function App() {
     setLoading(true)
     setError(null)
     try {
-      const response = await axios.post<{ answer: string }>(`${REACT_APP_BASE_URL }/ask`, { docId, question })
+      const response = await axios.post<{ answer: string }>(`${BASE_URL}/ask`, { docId, question })
       setMessages(prev => [...prev, { role: 'assistant', content: response.data.answer }])
     } catch (error) {
       console.error('Error asking question:', error)
