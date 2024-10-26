@@ -5,7 +5,7 @@ import { Input } from "./components/ui/input"
 import { Textarea } from "./components/ui/textarea"
 import { ScrollArea } from "./components/ui/scroll-area"
 import { Upload, Send, Bot, User, Sun, Moon } from "lucide-react"
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001/api';
+const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3001/api';
 
 export default function App() {
   const [file, setFile] = useState<File | null>(null)
@@ -29,10 +29,6 @@ export default function App() {
     }
   }
 
-  useEffect(()=>{
-    console.log('file', file);
-  },[file])
-
   const handleUpload = async () => {
     if (!file) return
 
@@ -45,11 +41,10 @@ export default function App() {
       const response = await axios.post<{ message: string; docId: string }>(`${BASE_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      console.log("doc id", response?.data?.docId)
       setDocId(response?.data?.docId)
       setMessages(prev => [...prev, { role: 'assistant', content: `PDF "${file.name}" uploaded successfully. You can now ask questions about it.` }])
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error('Error uploading PDF:', error)
       setError('Error uploading PDF. Please try again.')
     }
     setLoading(false)
@@ -65,8 +60,8 @@ export default function App() {
     try {
       const response = await axios.post<{ answer: string }>(`${BASE_URL}/ask`, { docId, question })
       setMessages(prev => [...prev, { role: 'assistant', content: response.data.answer }])
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error('Error asking question:', error)
       setError('Error processing question. Please try again.')
     }
     setLoading(false)
@@ -74,8 +69,6 @@ export default function App() {
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
-    // Here you would typically also update your app's theme
-    // This might involve changing a class on the body or using a theme context
   }
 
   return (
