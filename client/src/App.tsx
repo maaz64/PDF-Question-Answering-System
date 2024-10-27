@@ -162,9 +162,9 @@ export default function App() {
                   To get started:
                 </p>
                 <ol className="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-300">
-                  <li>Choose a PDF file using the sidebar on the left</li>
-                  <li>Click the "Upload PDF" button</li>
-                  <li>Once uploaded, you can ask questions about the PDF content</li>
+                  <li>Choose a PDF file </li>
+                  <li>Upload PDF file</li>
+                  <li>Ask questions about the PDF content</li>
                 </ol>
               </div>
             </div>
