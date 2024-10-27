@@ -5,7 +5,8 @@ import { Input } from "./components/ui/input"
 import { Textarea } from "./components/ui/textarea"
 import { ScrollArea } from "./components/ui/scroll-area"
 import { Upload, Send, Bot, User, Sun, Moon } from "lucide-react"
-const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3001/api';
+const BASE_URL = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_BASE_URL_LOCAL;
+
 
 export default function App() {
   const [file, setFile] = useState<File | null>(null)
@@ -37,12 +38,14 @@ export default function App() {
 
     setLoading(true)
     setError(null)
+    console.log("BASE_URL ",BASE_URL);
     try {
       const response = await axios.post<{ message: string; docId: string }>(`${BASE_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       setDocId(response?.data?.docId)
       setMessages(prev => [...prev, { role: 'assistant', content: `PDF "${file.name}" uploaded successfully. You can now ask questions about it.` }])
+      setFile(null);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setError('Error uploading PDF. Please try again.')
@@ -89,7 +92,7 @@ export default function App() {
             className="w-full mb-2 bg-gray-700"
             variant="outline"
           >
-            <Upload className="mr-2 h-4 w-4" /> Choose PDF
+            {file ? <p className="text-sm overflow-x-scroll">{file.name}</p> :<><Upload className="mr-2 h-4 w-4" /> Choose PDF</> }
           </Button>
           {file && (
             <Button 
@@ -101,9 +104,9 @@ export default function App() {
             </Button>
           )}
         </div>
-        <div className="overflow-hidden mt-4">
+        {/* <div className="overflow-hidden mt-4">
           {file && <p className="text-sm overflow-x-scroll">Selected: {file.name}</p>}
-        </div>
+        </div> */}
         {error && (
           <div className="mt-4 p-2 bg-red-600 text-white rounded">
             {error}
@@ -138,20 +141,12 @@ export default function App() {
                     </div>
                   )}
                   {message.role === 'user' && (
-                    // <div className="flex items-start">
-                    //   <div className="bg-blue-500 text-white rounded-lg p-2 max-w-[75%]">
-                    //     {message.content}
-                    //   </div>
-                    //   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-300 flex items-center justify-center ml-2">
-                    //     <User className="h-5 w-5 text-blue-600" />
-                    //   </div>
-                    // </div>
                       <div className="flex items-start">
-                        <div className="bg-blue-500 text-white rounded-lg p-2 max-w-full"> {/* Changed max-w-[75%] to max-w-full */}
+                        <div className="bg-gray-500 text-white rounded-lg p-2 max-w-full"> {/* Changed max-w-[75%] to max-w-full */}
                           {message.content}
                         </div>
-                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-300 flex items-center justify-center ml-2">
-                          <User className="h-5 w-5 text-blue-600" />
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center ml-2">
+                          <User className="h-5 w-5 text-white" />
                         </div>
                       </div>
                   )}
